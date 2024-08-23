@@ -22,9 +22,12 @@ class IncMatGraph(Graph):
     def __init__(self):
         ### Implement me! ###
         # Initiate vertices list, edges list and incidence matrix
-        self.vertices: dict[Coordinates, int] = {}              # Maps the coordinates to vertex index
+        # Dictionary to map vertex coordinates to vertex index
+        self.vertices: dict[Coordinates, int] = {}                    # Maps the coordinates to vertex index
+         # List to store edges as tuples (vert1, vert2, wallStatus)
         self.edges: List[tuple[Coordinates, Coordinates, bool]] = []  # list of edges
-        self.incidence_matrix: List[List[int]] = []             # list of incidence
+        # Incidence matrix to represent connections between vertices and edges
+        self.incidence_matrix: List[List[int]] = []                   # list of incidence
 
 
 
@@ -35,8 +38,6 @@ class IncMatGraph(Graph):
             vertex_index = len(self.vertices)
             self.vertices[label] = vertex_index
 
-            # for row in self.incidence_matrix:
-            #     row.append(0) 
             # this indicate that a new added vertex does not connect to any of existing vertices
             # A new added row to the incidence matrix
             # This row is initialised with zeros, where number of zeros correspond to number of edges
@@ -81,21 +82,13 @@ class IncMatGraph(Graph):
     def updateWall(self, vert1:Coordinates, vert2:Coordinates, wallStatus:bool)->bool:
         ### Implement me! ###
         # remember to return booleans
-        # timer for generation
-		
-        startGenTime : float = time.perf_counter()
-
+        # Updates the wall status for an existing edge between two vertices.
         for i, (v1,v2,_) in enumerate(self.edges):
             if (v1 == vert1 and v2 == vert2) or (v2 == vert1 and v1 == vert2):
                 self.edges[i] = (v1, v2, wallStatus)
-                endGenTime: float = time.perf_counter()
-
-                print(f'Update Wall took {endGenTime - startGenTime:0.4f} seconds')
+                
                 return True
-        # stop timer
-        endGenTime: float = time.perf_counter()
-
-        print(f'Update Wall took {endGenTime - startGenTime:0.4f} seconds')
+       
         return False
             
 
@@ -104,7 +97,7 @@ class IncMatGraph(Graph):
     def removeEdge(self, vert1:Coordinates, vert2:Coordinates)->bool:
         ### Implement me! ###
         # remember to return booleans
-        # Remove and edge and update the incidence
+        # Removes an edge between two vertices and updates the incidence matrix.
         for i, (v1,v2,_) in enumerate(self.edges):
             if (v1 == vert1 and v2 == vert2) or (v2 == vert1 and v1 == vert2):
                 self.edges.pop(i)
@@ -144,24 +137,21 @@ class IncMatGraph(Graph):
         ### Implement me! ###
         # remember to return list of coordinates
         # Return a list of neighbours of a given vertex
-        # timer for generation
-		
-        startGenTime : float = time.perf_counter()
         neighbours = []
+        
         if label in self.vertices:
             vertex_index = self.vertices[label]
-            for edge_index, (v1,v2, has_wall) in enumerate(self.edges):
+            for edge_index, (v1, v2, _) in enumerate(self.edges):
                 if self.incidence_matrix[vertex_index][edge_index] == 1 :
-                    if  v1 == label:
+                    if v1 == label:
                         neighbours.append(v2)
-                    else:
+                    elif v2 ==label:
                         neighbours.append(v1)
-        # stop timer
-		
-        endGenTime: float = time.perf_counter()
-        print(f'Neighbour took {endGenTime - startGenTime:0.4f} seconds')
-
         return neighbours
+    
+    def printStatistic(self):
+        print('Edges: ',len(self.edges))
+        print('Vertices: ',len(self.vertices))
     
 
         

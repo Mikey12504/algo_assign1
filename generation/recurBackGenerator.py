@@ -5,7 +5,7 @@
 # __author__ = 'Jeffrey Chan'
 # __copyright__ = 'Copyright 2024, RMIT University'
 # -------------------------------------------------------------------
-
+import time
 from random import randint, choice
 from collections import deque
 
@@ -23,10 +23,11 @@ class RecurBackMazeGenerator(MazeGenerator):
 	"""
 
 	def generateMaze(self,maze: Maze):
-
+		
+		
 		# make sure we start the maze with all walls there
 		maze.initCells(True)
-
+		
 		# select starting cell 
 		startCoord : Coordinates = Coordinates(randint(0, maze.rowNum()-1), randint(0, maze.colNum()-1))
 
@@ -38,9 +39,12 @@ class RecurBackMazeGenerator(MazeGenerator):
 
 		totalCells = maze.rowNum() * maze.colNum()
 
+		
 		while len(visited) < totalCells:
+			
 			# find all neighbours of current cell
 			neighbours : list[Coordinates] = maze.neighbours(currCell)
+			
 
 			# filter to ones that haven't been visited and within boundary
 			nonVisitedNeighs : list[Coordinates] = [neigh for neigh in neighbours if neigh not in visited and neigh.getRow() >= 0 and neigh.getRow() < maze.rowNum() and neigh.getCol() >= 0 and neigh.getCol() < maze.colNum()]
@@ -50,9 +54,10 @@ class RecurBackMazeGenerator(MazeGenerator):
 				# randomly select one of them
 				neigh = choice(nonVisitedNeighs)
 
+				
 				# we move there and knock down wall
 				maze.removeWall(currCell, neigh)
-
+				
 				# add to stack
 				stack.append(neigh)
 

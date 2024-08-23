@@ -108,12 +108,12 @@ if __name__ == '__main__':
 		startGenTime : float = time.perf_counter()
 
 		generator.generateMaze(maze)
-
+		
 		# stop timer
 		endGenTime: float = time.perf_counter()
 
 		print(f'Generation took {endGenTime - startGenTime:0.4f} seconds')
-		
+		#maze.m_graph.printStatistic()
 		# add/generate the entrances and exits
 		generator.addEntrances(maze)
 		generator.addExits(maze)

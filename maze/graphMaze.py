@@ -54,14 +54,18 @@ class GraphMaze(Maze):
 
         # add adjacenies/edges to the graph
         # Scan across rows first
+        
         for row in range(0, self.m_rowNum):
             for col in range(-1, self.m_colNum):
                 self.m_graph.addEdge(Coordinates(row,col), Coordinates(row,col+1), addWallFlag)
+                
 
         # scan columns now
         for col in range(0, self.m_colNum):
             for row in range(-1, self.m_rowNum):
                 self.m_graph.addEdge(Coordinates(row,col), Coordinates(row+1,col), addWallFlag)
+                
+        
 
 
 

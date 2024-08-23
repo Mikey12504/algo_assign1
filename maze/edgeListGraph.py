@@ -6,7 +6,6 @@
 # __copyright__ = 'Copyright 2024, RMIT University'
 # ------------------------------------------------------------------------
 
-
 from typing import List
 
 from maze.util import Coordinates
@@ -20,27 +19,37 @@ class EdgeListGraph(Graph):
     """
 
     """
-    Represent an undirected graph using an edge list. Each edge is a tuple contain two vertice and option wall status
+    Represents an undirected graph using an edge list. 
+    Each edge is a tuple containing two vertices (cells) and an optional wall status.
     """
 
     def __init__(self):
         ### Implement me! ###
-        #initiate a list to store the edges and set to store the vertices
+        # Initializes the graph with an empty list of edges and an empty set of vertices.
+      
         self.edges: List[tuple[Coordinates, Coordinates, bool]] = []
         self.vertices: set[Coordinates] = set()
 
 
         
     def addVertex(self, label:Coordinates):
-        ### Implement me! ###
-        # Add a vertex to a set of vertices
+       
+        """
+        Adds a vertex to the graph.
+        
+        :param label: The vertex (cell) to be added, represented as Coordinates.
+        """
         self.vertices.add(label)
     
 
 
     def addVertices(self, vertLabels:List[Coordinates]):
-        ### Implement me! ###
-        # Add multiple vertices by extending the set
+        
+        """
+        Adds multiple vertices to the graph.
+        
+        :param vertLabels: A list of vertices (cells) to be added, represented as Coordinates.
+        """
         for label in vertLabels:
             self.addVertex(label)
 
@@ -64,7 +73,7 @@ class EdgeListGraph(Graph):
     def updateWall(self, vert1:Coordinates, vert2:Coordinates, wallStatus:bool)->bool:
         ### Implement me! ###
         # remember to return booleans
-        # Update wall status for an existing edge
+        # Updates the wall status for an existing edge between two vertices.
         for i, (v1, v2, _) in enumerate(self.edges):
             if(v1 == vert1 and v2 == vert2) or (v1 == vert2 and v2 == vert1):
                 self.edges[i] = (v1, v2, wallStatus)
@@ -76,7 +85,7 @@ class EdgeListGraph(Graph):
 
     def removeEdge(self, vert1:Coordinates, vert2:Coordinates)->bool:
         ### Implement me! ###
-        # remember to return booleans
+        # Removes an edge between two vertices in the graph.
         for i,(v1, v2, _) in enumerate(self.edges):
             if (v1 == vert1 and v2 == vert2) or (v1 == vert2 and v2 ==vert1):
                 self.edges.pop(i)
@@ -119,12 +128,21 @@ class EdgeListGraph(Graph):
         # Find all neighbour of a given vertex
     
         neighbours = []
-        for v1, v2, _ in self.edges:
-            if v1 == label:
-                neighbours.append(v2)
-            elif v2 ==label:
-                neighbours.append(v1)
+        # Iterate through edges to find all neighbors
+        if label in self.vertices:
+            for v1, v2, _ in self.edges:
+                
+                if v1 == label:
+                    neighbours.append(v2)
+                elif v2 ==label:
+                    neighbours.append(v1)
         return neighbours
     
-    
+    def printStatistic(self):
+        print('Edges: ',len(self.edges))
+        
+
+        print('Vertices: ',len(self.vertices))
+        for label in self.vertices:
+            print('(',label.getRow(), ',', label.getCol(),')')
      
